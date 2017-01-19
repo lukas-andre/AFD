@@ -59,10 +59,10 @@ class Menu():
         estados = quintupla.get_Q()
         for num_estado in estados: # i = num del estado
             for caracter in quintupla.get_alfabeto():
-                transicion = raw_input("En " + str(estados[num_estado]) + " leyendo '" + str(caracter) + "' voy a : ")
+                transicion = raw_input("En " + str(num_estado) + " leyendo '" + str(caracter) + "' voy a : ") ## aca igual cuidado
                 if quintupla.validar_transicion(transicion):
                     #print "trancision validad"
-                    transiciones[estados[num_estado],caracter] = transicion
+                    transiciones[num_estado,caracter] = transicion ## CUIDADO ACA antes era transiciones[estados[num_estado],caracter] = transicion
                     #print transiciones
                 else:
                     print "transicion invalidad ingresar de nuevo"
