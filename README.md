@@ -1,3 +1,3 @@
-Grafos y lenguajes formales
+# Desarroll de automata finito deterministico en python
 
-Manipulacion de un AFD
+###### Grafos y lenguajes formales
