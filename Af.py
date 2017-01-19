@@ -21,9 +21,19 @@ class Af(object):
             else:
                 return False
 
+<<<<<<< HEAD
     def validate(self, palabra,_type):
         validate = False
         for i in range(len(palabra)):
             if (str(palabra[i]) in str(self.alfabeto)):
                     validate = True
+=======
+    def validate_tm5(self, palabra):
+        validate = False
+        for i in range(len(palabra)):
+            if (int(palabra[i]) in self.alfabeto):
+                validate = True
+            else:
+                validate = False
+>>>>>>> 55649a28d70e5fa4b0cd21ea2631325c9e983801
         return validate

@@ -1,9 +1,19 @@
+<<<<<<< HEAD
 
 class Tm5(object): # tmf = transiciones multiplos de 5
 
     def __init__(self):
         self.Q = [0,1,2,3,4]
         self.alfabeto = [0,1]
+=======
+class Tm5(object):
+
+    # tmf = transiciones multiplos de 5
+
+    def __init__(self):
+        self.Q = [0,1,2,3,4]
+        self.Alfabeto = [0,1]
+>>>>>>> 55649a28d70e5fa4b0cd21ea2631325c9e983801
         self.transiciones = {
                         (0,0):0,
                         (0,1):1,
@@ -18,6 +28,7 @@ class Tm5(object): # tmf = transiciones multiplos de 5
                         }
         self.q0 = 0
         self.qF = 0
+<<<<<<< HEAD
 
     def get_data_type(self): # if has one or more str datatype return str
         for i in self.alfabeto:
@@ -26,3 +37,5 @@ class Tm5(object): # tmf = transiciones multiplos de 5
             if type(i) == str:
                 return type(i)
         return _type
+=======
+>>>>>>> 55649a28d70e5fa4b0cd21ea2631325c9e983801
