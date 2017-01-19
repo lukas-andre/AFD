@@ -106,5 +106,6 @@ class Menu():
     def separar(self,alfabeto):
         alf = []
         for i in range(len(alfabeto)):
-            alf.append(alfabeto[i])
+            if alfabeto[i] != ','
+                alf.append(alfabeto[i])
         return alf
