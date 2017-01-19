@@ -35,7 +35,7 @@ class Menu():
         while n_stado >= 0:
             estado = raw_input("ingrese estados: ")
             if estado != 'ok':
-                estados[str(n_stado)] = estado
+                estados[str(estado)] = n_stado ##Cuidado con esta linea fixeala luego
                 n_stado +=1
                 print estados,"~> 'ok' finalizar ingreso de estados "
             if estado == 'ok':
@@ -100,6 +100,7 @@ class Menu():
             self.validar_lenguaje(quintupla)
         else:
             print "No se reconoce lenguaje le recomendamos usar palabras este Alfabeto:" + str(automata.alfabeto)
+            self.validar_lenguaje(quintupla)
         if palabra == "back":
             Menu()
 
