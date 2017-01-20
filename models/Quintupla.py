@@ -9,7 +9,11 @@ class Quintupla():
         self.qF = None
 
     def set_Q(self,Q):
-        self.Q = Q
+        k = []
+        for i in Q:
+            k.append(i)
+            k.sort()
+        self.Q = k
 
     def set_alfabeto(self,alfabeto):
         self.alfabeto = alfabeto
@@ -54,5 +58,8 @@ class Quintupla():
         print "Estado final -> qF ->", self.qF
 
     def listar_transiciones(self):
-        for i in self.transiciones:
-            print "\t",i,"->",self.transiciones[i]
+        if self.transiciones:
+            for i in self.transiciones:
+                print "\t",i,"->",self.transiciones[i]
+        else:
+            print "None"
