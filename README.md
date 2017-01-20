@@ -1,3 +1,3 @@
-# Desarroll de automata finito deterministico en python
+# Desarrollo de automata finito deterministico en python
 
 ###### Grafos y lenguajes formales

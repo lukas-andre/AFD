@@ -9,7 +9,9 @@ class Af():
         self.qF = qF
 
     def is_in_tm5(self,palabra,qActual):
-        if  str(palabra) == "" and qActual == self.qF:
+        if  str(palabra) == "" and qActual in self.qF:
+            return True
+        if qActual == self.q0 and len(palabra) == 0:
             return True
         else:
             try:
@@ -22,7 +24,9 @@ class Af():
                 return False
 
     def is_in(self,palabra,qActual):
-        if  str(palabra) == "" and qActual == self.qF:
+        if  str(palabra) == "" and qActual in self.qF:
+            return True
+        if qActual == self.q0 and len(palabra) == 0:
             return True
         else:
             try:
@@ -40,4 +44,6 @@ class Af():
         for i in range(len(palabra)):
             if (str(palabra[i]) in str(self.alfabeto)):
                 validate = True
+        if len(palabra) == 0:
+            validate = True
         return validate
