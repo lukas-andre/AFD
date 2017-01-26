@@ -60,17 +60,28 @@ class Afnd(Quintupla):
         nuevas_transiciones={}
         for estado in estado_recorridos:
             for simbolo in self.alfabeto:
-                print "nuevas transicion: ", nuevas_transiciones
-                print "estados recorridos: ",estado_recorridos
+                #print "nuevas transicion: ", nuevas_transiciones
+                #print "estados recorridos: ",estado_recorridos
 
+                #compruebo si el siguiente estado es un estado compuesto o fixiado.
                 if self.is_fix(estado):
-                    print "es fixiado el estado siguiente", estado
+
+                    #print "es fixiado el estado siguiente", estado
+
                     transiciones_fix = self.get_fix_tranciciones(estado,simbolo)
-                    print "transicion fix: ", transiciones_fix
+
+                    #print "transicion fix: ", transiciones_fix
                     if type(transiciones_fix) == list:
                         nuevo_estado = self.fix_transicion(transiciones_fix)
+
+                    if type(transiciones_fix) == str:
+                        nuevo_estado = transiciones_fix
+
                     if nuevo_estado not in estado_recorridos:
-                        estado_recorridos.append(nuevo_estado)
+                        if nuevo_estado[1:] not in estado_recorridos:
+                            print "nuevo estado append:", nuevo_estado
+                            estado_recorridos.append(nuevo_estado)
+
                     nuevas_transiciones[estado,simbolo] = nuevo_estado
 
                 elif type(self.transiciones[estado,simbolo]) == list:
@@ -84,22 +95,50 @@ class Afnd(Quintupla):
                     if self.transiciones[estado,simbolo] != 'dead':
                         nuevas_transiciones[estado,simbolo] = self.transiciones[estado,simbolo]
 
-                #compruebo si el siguiente estado es un estado compuesto o fixiado.
 
-        return nuevas_transiciones
+        # SE SETEAN NUEVOS CAMPOS.
+        self.transiciones = nuevas_transiciones
+        self.Q = estado_recorridos
+
+        _qF = self.nueva_qF()
+        self.qF = _qF
+
+    def nueva_qF(self):
+        estados = self.Q
+        qF = self.qF
+        _qF = []
+        for estado in estados:
+            if self.is_fix(estado):
+                sub_estado = self.separar_fixiados(estado)
+                #print "sub estados :" , sub_estado
+                for sub_estado in estado:
+                    for q in qF:
+                        if q in sub_estado:
+                                _qF.append(estado)
+            else:
+                continue
+        _qF = self.clear_estados_comunes(_qF)
+        return _qF
 
     #nueva_transicion recibira un estado fixiado y entregara lista con transiciones
     def get_fix_tranciciones(self,estado,simbolo):
+        print estado
         estados = self.separar_fixiados(estado)
-        print estados
         estados_comunes = []
-        for estado in estados:
-            # no es necesario insertar en la lista las transiciones que no llevan a ningun lado (muertas)
-            if self.transiciones[estado,simbolo] != 'dead':
-                for q in self.transiciones[estado,simbolo]:
-                    estados_comunes.append(q)
-        print "get_fix_tranciciones: ", estados_comunes
-        return self.clear_estados_comunes(estados_comunes)
+        print estados
+        if  len(estados) == 1  :
+            print " Estado largo 1"
+            print "estado es: ", estados[0]
+            return estados[0]
+
+        else:
+            for estado in estados:
+                # no es necesario insertar en la lista las transiciones que no llevan a ningun lado (muertas)
+                if self.transiciones[estado,simbolo] != 'dead':
+                    for q in self.transiciones[estado,simbolo]:
+                        estados_comunes.append(q)
+                        #print "get_fix_tranciciones: ", estados_comunes
+            return self.clear_estados_comunes(estados_comunes)
 
     #Metodo para limpiar estados repetidos
     def clear_estados_comunes(self,estados_comunes):
@@ -109,7 +148,7 @@ class Afnd(Quintupla):
     def separar_fixiados(self,estado):
         estado = estado[1:]
         estado = estado.split('-')
-        print "dentro de separar fixiados print estado split :", estado
+        #print "dentro de separar fixiados print estado split :", estado
         return estado
 
     def is_fix(self,qFixiado):

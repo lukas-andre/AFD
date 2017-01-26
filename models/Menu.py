@@ -70,11 +70,12 @@ class Menu():
                     self.set_transiciones_afnd(quintupla)
 
     def transformar(self,afnd):
-        go = raw_input("Presione enter para llevar acabo la transfomarcion.......")
+        go = raw_input("Presione enter para llevar acabo la transfomarcion....")
         if len(go)==0 or len(go) > 0:
-            print afnd.transformar_a_AFD()
-            print " AAAAAA "
-            print afnd
+            print "\t\n TRANSFORMANDO.....\n"
+            afnd.transformar_a_AFD()
+            automata = Af(afnd.Q, afnd.alfabeto, afnd.transiciones, afnd.q0, afnd.qF)
+            automata.mostrar()
         self.transformar(afnd)
 
     def op1(self):

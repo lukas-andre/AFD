@@ -1,5 +1,6 @@
+from Quintupla import Quintupla
 
-class Af():
+class Af(Quintupla):
 
     def __init__(self,Q,alfabeto,transiciones,q0,qF):
         self.Q = Q
