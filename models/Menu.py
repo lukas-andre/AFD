@@ -1,6 +1,7 @@
 from Tm5 import Tm5
 from Af import Af
 from Quintupla import Quintupla
+from Afnd import Afnd
 
 class Menu():
 
@@ -11,6 +12,7 @@ class Menu():
 
         print "\n\t1.- Iniciar automata multiplos de 5 en binario. "
         print "\n\t2.- Ingresar Quintupla."
+        print "\n\t3.- Transoformar AFND -> AFD."
         print "\n\topciones extras :\n\t\n back - vuelve al menu principal"
         print  "\t\n reset - resetea cualquier proceso en desarrollo"
         print  "\t\nbeta:\n\t\n   show - muestra automata y/o quintupla"
@@ -19,6 +21,61 @@ class Menu():
             self.op1()
         if op == "2":
             self.op2()
+        if op == '3':
+            self.op3()
+
+    def op3(self):
+
+        quintupla_afnd = Afnd()
+        self.op2_estados(quintupla_afnd)
+
+    def set_transiciones_afnd(self,quintupla):
+        print "\nTransiciones\n"
+        print "\nIMPORTANTE"
+        print "\n # = transicio vacia"
+        print "\nSi existe mas de una transicion separar con , o ' '"
+        print "\nSi NO EXISTE transicion solo presionar ENTER\n"
+
+        quintupla.mod_alfabeto()
+        estados = quintupla.get_Q()
+        transiciones = {}
+
+        for num_estado in estados:
+            for caracter in quintupla.get_alfabeto_afnd():
+                if num_estado ==  'dead':
+                    quintupla.set_transiciones(transiciones)
+                    quintupla.clear_q()
+                    self.op2_estado_inicial(quintupla)
+
+                transicion = raw_input("En '" + str(num_estado) + "' leyendo '" + str(caracter) + "' voy a : ") ## aca igual cuidado
+                transicion = self.clean_transicion(transicion)
+
+
+                if transicion == 'reset':
+                    self.op2_transiciones(quintupla)
+
+                if transicion == 'back':
+                    Menu()
+
+                if transicion == 'show':
+                    quintupla.mostrar()
+                    self.op2_transiciones(quintupla)
+
+                if quintupla.validar_transicion_afnd(transicion):
+                    transiciones[num_estado,caracter] = transicion
+
+                else:
+                    print "transicion invalidad ingresar de nuevo"
+                    quintupla.borrar_transiciones()
+                    self.set_transiciones_afnd(quintupla)
+
+    def transformar(self,afnd):
+        go = raw_input("Presione enter para llevar acabo la transfomarcion.......")
+        if len(go)==0 or len(go) > 0:
+            print afnd.transformar_a_AFD()
+            print " AAAAAA "
+            print afnd
+        self.transformar(afnd)
 
     def op1(self):
 
@@ -71,6 +128,13 @@ class Menu():
                     continue
 
             if estado == 'ok' and len(estados) != 0:
+
+                # Si es un AFND agregamos un estado muerto.
+                if quintupla.get_name() == "AFND":
+                    quintupla.set_afnd_Q(estados)
+                    print "\n\t Estados -> Qs : ",quintupla.get_Q(),"\n"
+                    self.op2_alfabeto(quintupla)
+
                 quintupla.set_Q(estados)
                 print "\n\t Estados -> Qs : ",quintupla.get_Q(),"\n"
                 self.op2_alfabeto(quintupla)
@@ -84,8 +148,16 @@ class Menu():
             confirmacion = raw_input("se refiere a " + str(self.separar(alfabeto)) + " y/n?... ")
 
             if confirmacion == 'y':
+
                 quintupla.set_alfabeto(alfabeto)
-                self.op2_transiciones(quintupla)
+
+                #   Verificamos si es una quintupla de AFND o un AFD
+                if quintupla.get_name() == "AFND":
+                    print "AFND"
+                    self.set_transiciones_afnd(quintupla)
+                else:
+                    print "quintupla comun"
+                    self.op2_transiciones(quintupla)
 
             else:
                 self.op2_alfabeto(quintupla)
@@ -166,7 +238,10 @@ class Menu():
             if q == 'ok' and len(qF) != 0:
                 quintupla.set_qF(qF)
                 quintupla.mostrar()
-                self.validar_lenguaje(quintupla)
+                if quintupla.get_name() == 'AFND':
+                    self.transformar(quintupla)
+                if quintupla.get_name() == 'Quintupla':
+                    self.validar_lenguaje(quintupla)
 
             if q != 'ok' and quintupla.valida_estado(q):
                 if self.valida_unico(q,qF):
@@ -224,3 +299,16 @@ class Menu():
             return False
         else:
             return True
+
+    # Metodo para AFND
+    def clean_transicion(self,transicion):
+        if len(transicion) == 0:
+            return 'dead'
+
+        if ',' in transicion:
+            return transicion.split(',')
+
+        if ' ' in transicion:
+            return transicion.split(' ')
+        else:
+            return transicion

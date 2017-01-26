@@ -30,6 +30,9 @@ class Quintupla():
     def get_Q(self):
         return self.Q
 
+    def get_transiciones(self):
+        return self.transiciones
+
     def get_alfabeto(self):
         return self.alfabeto
 
@@ -63,3 +66,6 @@ class Quintupla():
                 print "\t",i,"->",self.transiciones[i]
         else:
             print "None"
+            
+    def get_name(self):
+        return "Quintupla"
